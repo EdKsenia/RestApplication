@@ -6,10 +6,12 @@ package ru.itis.springbootrest.controllers;
         import org.springframework.ui.Model;
         import org.springframework.web.bind.annotation.*;
         import ru.itis.springbootrest.dto.HelpMessageDto;
+        import ru.itis.springbootrest.dto.UserDto;
         import ru.itis.springbootrest.models.User;
-        import ru.itis.springbootrest.security.UserDetailsImpl;
+        import ru.itis.springbootrest.security.jwt.detais.UserDetailsImpl;
         import ru.itis.springbootrest.service.HelpService;
         import ru.itis.springbootrest.service.SmsService;
+        import ru.itis.springbootrest.service.UsersService;
 
 @Controller
 public class HelpController {
@@ -19,10 +21,13 @@ public class HelpController {
     @Autowired
     private SmsService smsService;
 
+    @Autowired
+    private UsersService usersService;
+
     @GetMapping("/help")
     public String getHelp(Authentication authentication, Model model) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        model.addAttribute("user", userDetails.getUser());
+        model.addAttribute("user", usersService.getConcreteUser(userDetails.getUserId()));
         return "help";
     }
 
@@ -30,7 +35,7 @@ public class HelpController {
     @PostMapping("/help")
     public void getHelp(Authentication authentication, HelpMessageDto form, @RequestParam("phone") String phone) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userDetails.getUser();
+        User user = usersService.getConcreteUser(userDetails.getUserId());
         form.setUser(user);
         service.help(form);
 //        return "ok";

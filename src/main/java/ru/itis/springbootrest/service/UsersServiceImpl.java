@@ -22,14 +22,24 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UserDto getConcreteUser(Long userId){
+    public User getConcreteUser(Long userId){
         User user = usersRepository.getOne(userId);
-        return from(user);
+        return user;
     }
 
     @Override
     public List<UserDto> search(String name){
         return from(usersRepository.findAllByNameContainsIgnoreCase(name));
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return UserDto.from(usersRepository.findAll());
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        usersRepository.deleteById(userId);
     }
 //    @Autowired
 //    private CookieValuesRepository cookieValuesRepository;

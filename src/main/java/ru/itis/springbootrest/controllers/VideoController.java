@@ -12,21 +12,15 @@ import ru.itis.springbootrest.models.User;
 import ru.itis.springbootrest.models.Video;
 import ru.itis.springbootrest.repositories.ChannelsRepository;
 import ru.itis.springbootrest.repositories.VideoRepository;
-import ru.itis.springbootrest.security.UserDetailsImpl;
+import ru.itis.springbootrest.security.jwt.detais.UserDetailsImpl;
 import ru.itis.springbootrest.service.CommentsService;
+import ru.itis.springbootrest.service.UsersService;
 import ru.itis.springbootrest.service.VideoService;
 
 import java.util.List;
 
 @Controller
 public class VideoController {
-//    @GetMapping("/note")
-//    public String getNotePage() {
-//        return "note";
-//    }
-
-    @Autowired
-    private ChannelsRepository channelsRepository;
 
     @Autowired
     private VideoService videoService;
@@ -36,6 +30,9 @@ public class VideoController {
 
     @Autowired
     private CommentsService commentsService;
+
+    @Autowired
+    private UsersService usersService;
 
     @GetMapping("/note{note-id}")
     public String getConcreteNotePage(@PathVariable("note-id") Long noteId, Authentication authentication, Model model) {
@@ -67,7 +64,7 @@ public class VideoController {
     public String addComment(@PathVariable("note-id") Long noteId, Authentication authentication, CommentDto form) {
         if (authentication != null) {
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            form.setUser(userDetails.getUser());
+            form.setUser(usersService.getConcreteUser(userDetails.getUserId()));
             Video video = videoRepository.getOne(noteId);
             form.setVideo(video);
             commentsService.addComment(form);

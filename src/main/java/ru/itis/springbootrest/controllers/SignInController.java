@@ -1,45 +1,27 @@
 package ru.itis.springbootrest.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import ru.itis.springbootrest.dto.SignInDto;
+import ru.itis.springbootrest.dto.TokenDto;
+import ru.itis.springbootrest.service.SignInService;
 
-@Controller
+@RestController
 public class SignInController {
 
-    @GetMapping("/signIn")
-    public String getSignIn(Authentication authentication) {
-//        if (authentication!=null){
-//            return "main";
-//        }
-        return "sign_in";
+    @Autowired
+    private SignInService signInService;
+
+    @PostMapping("/signIn")
+    public ResponseEntity<TokenDto> signIn(@RequestBody SignInDto signInData) {
+        return ResponseEntity.ok(signInService.signIn(signInData));
     }
 
-//    @Autowired
-//    private SignInService signInService;
-
-//    @GetMapping("/signIn")
-//    public String getSignIn(@RequestParam(value = "error", required = false)
-//                            String error, Model model) {
-//        if (error != null){
-//            model.addAttribute("error", true);
-//        }
-//        return "sign_in";
-//    }
-
-//    @PostMapping("/signIn")
-//    public String signIn(@RequestParam("email") String email,
-//                         @RequestParam("password") String password,
-//                         HttpServletResponse response) {
-//        String cookieValue = signInService.signIn(email, password);
-//
-//        if (cookieValue == null) {
-//            return "redirect:/signIn?error";
-//        }
-//
-//        Cookie cookie = new Cookie("AuthCookie", cookieValue);
-//        response.addCookie(cookie);
-//        return "redirect:/users";
-//    }
 
 }

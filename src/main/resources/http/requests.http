@@ -1,7 +1,19 @@
 #GET localhost/search/videos?q=ksus&page=1&size=1
 
 GET localhost:80/channel/1/information
-#GET localhost:80/channel/1/videos?img=30
-#POST localhost:80/channel/1/add
 
+###
+
+GET localhost:80/channel/1/videos?img=30
+
+###
+GET http://localhost:80/users
+
+###
+
+DELETE http://localhost/users/2
+###
+
+#POST localhost:80/channel/1/add
+#POST http://localhost:80/signIn
 ###

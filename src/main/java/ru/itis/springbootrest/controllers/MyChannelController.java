@@ -9,9 +9,10 @@ import ru.itis.springbootrest.dto.InformationChannelDto;
 import ru.itis.springbootrest.dto.VideoDto;
 import ru.itis.springbootrest.models.Channel;
 import ru.itis.springbootrest.models.Video;
-import ru.itis.springbootrest.security.UserDetailsImpl;
+import ru.itis.springbootrest.security.jwt.detais.UserDetailsImpl;
 import ru.itis.springbootrest.service.AddVideoService;
 import ru.itis.springbootrest.service.ChannelsService;
+import ru.itis.springbootrest.service.UsersService;
 import ru.itis.springbootrest.service.VideoService;
 
 
@@ -29,25 +30,28 @@ public class MyChannelController {
     @Autowired
     private AddVideoService service;
 
-    @GetMapping("/myChannel")
-    public String getConcreteChannelPage(Authentication authentication, Model model) {
-        if (authentication != null) {
-            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-            model.addAttribute("user", userDetails.getUser());
-//            Channel channel = channelsRepository.findOneById(userDetails.getUser().getId());
-            Channel channel = channelsService.getConcreteChannelByUserId(userDetails.getUser().getId());
-            if (channel != null) {
-                model.addAttribute("channel", channel);
-                List<Video> videos = videoService.getVideos(channel.getId());
-                model.addAttribute("videos", videos);
-                return "myChannel";
-            } else {
-                return "createChannel";
-            }
+    @Autowired
+    private UsersService usersService;
 
-        }
-        return "createChannel";
-    }
+//    @GetMapping("/myChannel")
+//    public String getConcreteChannelPage(Authentication authentication, Model model) {
+//        if (authentication != null) {
+//            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//            model.addAttribute("user", usersService.getConcreteUser(userDetails.getUserId()));
+////            Channel channel = channelsRepository.findOneById(userDetails.getUser().getId());
+//            Channel channel = channelsService.getConcreteChannelByUserId(userDetails.getUserId());
+//            if (channel != null) {
+//                model.addAttribute("channel", channel);
+//                List<Video> videos = videoService.getVideos(channel.getId());
+//                model.addAttribute("videos", videos);
+//                return "myChannel";
+//            } else {
+//                return "createChannel";
+//            }
+//
+//        }
+//        return "createChannel";
+//    }
 
     @GetMapping("channel/{channel-id}/information")
     public ResponseEntity<InformationChannelDto> getInformation(@PathVariable("channel-id") Long channelId) {

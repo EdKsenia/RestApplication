@@ -11,4 +11,5 @@ public interface UsersRepository extends JpaRepository<User, Long> {
     List<User> findAllByNameContainsIgnoreCase(String name);
     Optional<User> findByConfirmCode(String confirmCode);
     Optional<User> findById(Long id);
+
 }

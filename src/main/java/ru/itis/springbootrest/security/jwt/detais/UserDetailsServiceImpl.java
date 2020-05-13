@@ -1,4 +1,4 @@
-package ru.itis.springbootrest.security;
+package ru.itis.springbootrest.security.jwt.detais;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.itis.springbootrest.models.User;
 import ru.itis.springbootrest.repositories.UsersRepository;
+import ru.itis.springbootrest.security.jwt.detais.UserDetailsImpl;
 
 import java.util.Optional;
 
@@ -18,10 +19,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> userOptional = usersRepository.findByEmail(email);
-        if (userOptional.isPresent()) {
-            return new UserDetailsImpl(userOptional.get());
-        }
-        throw new UsernameNotFoundException("User not found");
+//        Optional<User> userOptional = usersRepository.findByEmail(email);
+//        if (userOptional.isPresent()) {
+//            return new UserDetailsImpl(userOptional.getId());
+//        }
+//        throw new UsernameNotFoundException("User not found");
+        return null;
     }
 }

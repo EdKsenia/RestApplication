@@ -26,6 +26,7 @@ public class CommentDto {
                 id(comment.getId())
                 .text(comment.getText())
                 .video(comment.getVideo())
+//                .user(UserDto.from(comment.getUser()))
                 .user(comment.getUser())
                 .build();
     }
